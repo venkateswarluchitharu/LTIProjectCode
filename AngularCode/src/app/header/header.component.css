@@ -1,0 +1,13 @@
+nav a:hover {
+    background-position-x: 50%; 
+    background-color: #0c73cc;
+}
+.navbar{
+  height: 50px;
+}
+nav {
+  background-color:blueviolet;
+}
+.list {
+  margin-left: 5%;
+}

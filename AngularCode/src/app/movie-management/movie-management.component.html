@@ -1,0 +1,158 @@
+<div>
+  <h3>MOVIE MANAGEMENT</h3>
+  <button title="ADD MOVIE" class="btn addButton" data-toggle="modal" data-target="#movieModal"
+    (click)="onClickOnAdd()"><img src="assets/icons/plus-circle-solid.svg" alt="Add Movie" /></button>
+  <br /><br />
+
+  <!--datatable for movie data -->
+  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+    class="table table-striped table-bordered table-sm row-border hover">
+    <thead>
+      <tr>
+        <th>Action</th>
+        <th>Movie Name</th>
+        <th>Category</th>
+        <th>Producer</th>
+        <th>Director</th>
+        <th>Release Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of movieData">
+        <td>
+          <a title="Del Movie" data-toggle="modal" data-target="#deleteModal" style="cursor: pointer;"
+            (click)="getEachRowMovieDetails(data.id)"><img src="assets/icons/trash-alt-solid.svg" alt="Del" /></a>
+          <a title="Edit Movie" data-toggle="modal" data-target="#movieModal" style="margin-left: 30px;cursor: pointer;"
+            (click)="getEachRowMovieDetails(data.id)">
+            <img src="assets/icons/edit-regular.svg" alt="Edit" />
+          </a>
+        </td>
+        <td>{{data.movieName}}</td>
+        <td>{{data.movieCategory}}</td>
+        <td>{{data.movieProducer}}</td>
+        <td>{{data.movieDirector}}</td>
+        <td>{{data.releaseDate}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- dialogue box/modal for Add/Edit Movie -->
+  <div class="modal fade" id="movieModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{modalTitle}} MOVIE</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="movieFormGroup">
+            <div class="form-group row">
+              <label class="col-sm-3">Movie Name</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="text" placeholder="Enter Movie Name"
+                  [formControl]="movieFormGroup.controls['movie_name']" />
+                <small
+                  *ngIf="movieFormGroup.controls['movie_name'].hasError('required') && movieFormGroup.controls['movie_name'].dirty"
+                  class="text-warning">Movie Name Required!</small>
+                <small
+                  *ngIf="movieFormGroup.controls['movie_name'].hasError('maxlength') && movieFormGroup.controls['movie_name'].dirty"
+                  class="text-warning">Maximum 30 characters are allowed! </small>
+                <small *ngIf="movieFormGroup.controls['movie_name'].hasError('space') && movieFormGroup.controls['movie_name'].dirty &&
+                  !movieFormGroup.controls['movie_name'].hasError('required')" class="text-warning">Please Enter
+                  Correct Movie Name!</small>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3">Category</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="text" placeholder="Enter Category"
+                  [formControl]="movieFormGroup.controls['category']" />
+                <small
+                  *ngIf="movieFormGroup.controls['category'].hasError('required') && movieFormGroup.controls['category'].dirty"
+                  class="text-warning">Movie Category required!</small>
+                <small
+                  *ngIf="movieFormGroup.controls['category'].hasError('maxlength') && movieFormGroup.controls['category'].dirty"
+                  class="text-warning">Maximum 30 characters are allowed! </small>
+                <small *ngIf="movieFormGroup.controls['category'].hasError('space') && movieFormGroup.controls['category'].dirty &&
+                  !movieFormGroup.controls['category'].hasError('required')" class="text-warning">Please Enter Correct
+                  Movie Category!</small>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3">Producer</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="text" placeholder="Enter Producer Name"
+                  [formControl]="movieFormGroup.controls['producer']" />
+                <small
+                  *ngIf="movieFormGroup.controls['producer'].hasError('required') && movieFormGroup.controls['producer'].dirty"
+                  class="text-warning">Producer Name required!</small>
+                <small
+                  *ngIf="movieFormGroup.controls['producer'].hasError('maxlength') && movieFormGroup.controls['producer'].dirty"
+                  class="text-warning">Maximum 30 characters are allowed! </small>
+                <small *ngIf="movieFormGroup.controls['producer'].hasError('space') && movieFormGroup.controls['producer'].dirty &&
+                  !movieFormGroup.controls['producer'].hasError('required')" class="text-warning">Please Enter Correct
+                  Producer Name!</small>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3">Director</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="text" placeholder="Enter Director Name"
+                  [formControl]="movieFormGroup.controls['director']" />
+                <small
+                  *ngIf="movieFormGroup.controls['director'].hasError('required') && movieFormGroup.controls['director'].dirty"
+                  class="text-warning">Director Name required!</small>
+                <small
+                  *ngIf="movieFormGroup.controls['director'].hasError('maxlength') && movieFormGroup.controls['director'].dirty"
+                  class="text-warning">Maximum 30 characters are allowed! </small>
+                <small *ngIf="movieFormGroup.controls['director'].hasError('space') && movieFormGroup.controls['director'].dirty &&
+                  !movieFormGroup.controls['director'].hasError('required')" class="text-warning">Please Enter Correct
+                  Director Name!</small>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3">Release Date</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="date" min="1960-01-01" max="2050-01-01"
+                  [formControl]="movieFormGroup.controls['release_date']" />
+                <small
+                  *ngIf="movieFormGroup.controls['release_date'].hasError('required') && movieFormGroup.controls['release_date'].dirty"
+                  class="text-warning">Release Date required!</small>
+                <small *ngIf="movieFormGroup.controls['release_date'].hasError('dateValidator') && movieFormGroup.controls['release_date'].dirty &&
+                  !movieFormGroup.controls['release_date'].hasError('required')" class="text-warning">Please Enter
+                  correct Date!</small>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-success" (click)="saveMovie()" [disabled]="!movieFormGroup.valid"
+                data-dismiss="modal">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- dialogue box to delete record -->
+  <div class="modal" tabindex="-1" id="deleteModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this movie?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="onClickOnDelete()" data-dismiss="modal">Delete</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
